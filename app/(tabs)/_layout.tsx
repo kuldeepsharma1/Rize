@@ -2,8 +2,13 @@ import { Tabs } from 'expo-router';
 import React from 'react';
 
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
+import { TabCreateIcon } from '@/components/navigation/TabBarIcon';
+import { TabTaskIcon } from '@/components/navigation/TabBarIcon';
+import { TabProfileIcon } from '@/components/navigation/TabBarIcon';
+
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -13,6 +18,7 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
+        
       }}>
       <Tabs.Screen
         name="index"
@@ -24,11 +30,39 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="tasks"
         options={{
-          title: 'Explore',
+          title: 'Tasks',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+            <TabTaskIcon name={focused ? 'checklist' : 'checklist'} color={color} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="create"
+        options={{
+          title: 'Create',
+          tabBarIcon: ({ color, focused }) => (
+            <TabCreateIcon name={focused ? 'pluscircle' : 'pluscircleo'} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="notes"
+        options={{
+          title: 'Notes',
+          tabBarIcon: ({ color, focused }) => (
+            <TabCreateIcon name={focused ? 'filetext1' : 'filetext1'} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ color, focused }) => (
+            <TabProfileIcon name={focused ? 'user-alt' : 'user'} color={color} />
           ),
         }}
       />
