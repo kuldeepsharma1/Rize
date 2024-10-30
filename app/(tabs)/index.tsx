@@ -54,7 +54,7 @@ const HomeScreen = () => {
     };
 
     fetchLatestTasks();
-  }, []);
+  }, [latestTasks]);
 
   // notification
   // useEffect(() => {

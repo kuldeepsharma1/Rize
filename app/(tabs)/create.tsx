@@ -99,6 +99,7 @@ export default function TabTwoScreen() {
           <View className="flex flex-col space-y-10 lg:grid lg:grid-cols-2 lg:gap-2 lg:space-y-0">
             <View>
               <ThemedText type="title">My Templates</ThemedText>
+              <Text className="text-2xl text-center text-red-500 dark:text-green-500">Hello</Text>
               <ScrollView
               >
                 <View className="grid grid-cols-1 lg:grid-cols-2 gap-5 pt-4" >
@@ -107,7 +108,7 @@ export default function TabTwoScreen() {
 
                       <View className="flex justify-center items-center size-12 bg-gradient-to-br from-blue-600 to-violet-600 rounded-lg mx-auto">
 
-                        <TabTaskIcon name="now-widgets" size={42} className="flex-shrink-0  dark:text-white" />
+                        <TabTaskIcon name="now-widgets" size={42}  />
                       </View>
 
                       <View className="mt-3">
@@ -170,7 +171,7 @@ export default function TabTwoScreen() {
                           ) : (
                             <Pressable onPress={() => addTemplateToDailyTasks(template)}>
                               <View className="inline-flex flex-row items-center gap-1 rounded-l-full bg-transparent px-3 py-1.5 text-black dark:text-white border-l-2 border-t-2 hover:border-green-500 border-gray-100 dark:border-neutral-700">
-                                <TabTaskIcon name="add-circle" className="text-black dark:text-white" size={16} />
+                                <TabTaskIcon name="add-circle"  size={16} />
                                 <Text className="text-xs font-medium text-black dark:text-white">Add to Daily Tasks</Text>
                               </View>
                             </Pressable>

@@ -72,7 +72,7 @@ const MyModal: React.FC<MyModalProps> = ({
             <Text className='dark:text-white text-lg font-medium' >
               {editMode ? "Update Note" : "Add Note"}
             </Text>
-            <TabCreateIcon className='text-black dark:text-white flex-shrink-0 size-4' name={"pluscircleo"} size={24} color="white" />
+            <TabCreateIcon  name={"pluscircleo"} size={24} color="white" />
 
           </TouchableOpacity>
           <TouchableOpacity
