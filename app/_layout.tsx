@@ -9,6 +9,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useColorScheme } from '@/hooks/useColorScheme';
 
 import "../global.css";
+import { AuthProvider } from '@/context/AuthProvider';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -33,7 +34,7 @@ export default function RootLayout() {
         // Handle error appropriately (e.g., show an error message to the user)
       }
     };
-  
+
     fetchTemplates();
   }, [loaded]);
 
@@ -42,15 +43,17 @@ export default function RootLayout() {
   }
 
   return (
-  
-    <SafeAreaProvider>
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
-    </SafeAreaProvider>
    
+      <SafeAreaProvider>
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <AuthProvider>
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+          </AuthProvider>
+        </ThemeProvider>
+      </SafeAreaProvider>
+    
   );
 }

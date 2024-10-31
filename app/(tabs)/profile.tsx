@@ -6,8 +6,11 @@ import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Link } from 'expo-router';
+import { useAuth } from '@/context/AuthProvider';
+
 export default function TabTwoScreen() {
   const colorScheme = useColorScheme();
+  const { user } = useAuth();
   return (
     <ParallaxScrollView 
       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
@@ -15,6 +18,9 @@ export default function TabTwoScreen() {
     >
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">My Profile</ThemedText>
+        <Text className="text-lg text-gray-700">
+                {user ? `Welcome, ${user.email}` : 'Welcome, Guest User'}
+            </Text>
       </ThemedView>
       <View className='mx-auto'>
       <Link href="/settings" className='dark:text-white border border-black rounded-lg py-2 dark:border-white text-center  w-52'> <ThemedText type='subtitle'>View Settings</ThemedText></Link>

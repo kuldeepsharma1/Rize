@@ -49,7 +49,8 @@
       ]
     ],
     "experiments": {
-      "typedRoutes": true
+      "typedRoutes": true,
+      "reactNativeNewArchitecture": true
     },
     "extra": {
       "router": {
@@ -60,7 +61,16 @@
       },
       "permissions": [
         "NOTIFICATIONS"
-      ]
+      ],
+      "firebase": {
+        "apiKey": "AIzaSyDDastE9jHuTQq917IYfLRW4pzePdpOBx8",
+        "authDomain": "rize-e8d24.firebaseapp.com",
+        "projectId": "rize-e8d24",
+        "storageBucket": "rize-e8d24.appspot.com",
+        "messagingSenderId": "914179038403",
+        "appId": "1:914179038403:web:e5f8255db06dae41089676",
+        "measurementId": "G-KQ3HNQZGMR"
+      }
     },
     "owner": "k4kuldeep108"
   }
