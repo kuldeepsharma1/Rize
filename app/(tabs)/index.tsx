@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, View, TextInput, Text, useColorScheme, FlatList, StyleSheet, Modal, Pressable, Button } from 'react-native';
+import { View, TextInput, Text, useColorScheme, FlatList, StyleSheet, Modal, Pressable } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TabProfileIcon } from "@/components/navigation/TabBarIcon";
-import { TabFontAwesomenew } from "@/components/navigation/TabBarIcon";
-import { ExternalLink } from '@/components/ExternalLink';
-import { Link, router } from 'expo-router';
+import { Link } from 'expo-router';
 import TimeBlock from '@/components/TimeBlock';
 // import { requestPermissions, scheduleNotification } from '@/utils/Notification';
 
@@ -103,14 +101,14 @@ const HomeScreen = () => {
 
     <View className='grid grid-cols-1 md:grid-cols-2  '>
       <View className='h-[75vh] sm:h-screen md:pb-20 '>
-        <Text className='text-2xl sm:text-4xl py-10 text-center dark:text-neutral-100'>Manage Tasks</Text>
+        <Text className='text-2xl sm:text-4xl pt-12 pb-4 text-center dark:text-neutral-100'>Manage Tasks</Text>
         <FlatList
           data={latestTasks}
           keyExtractor={(item) => item.id.toString()}
           showsVerticalScrollIndicator={true}
           renderItem={({ item }) => (
             <View
-              className={`bg-white border border-t-4 border-neutral-500 dark:border-neutral-700 ${item.time === currentHourString
+              className={`bg-white border border-t-4  ${item.time === currentHourString
                 ? "border-t-green-600 dark:border-t-green-500"
                 : " "}
                 ${item.time == nextHour
@@ -138,20 +136,18 @@ const HomeScreen = () => {
                 )}
               </View>
               <View className="p-2 md:p-5 ">
-                <Text className="text-base  text-gray-800 dark:text-white">
+                <Text className="text-base font-semibold text-gray-800 dark:text-white">
                   {item.content}
                 </Text>
-                
+
               </View>
-              <TimeBlock item={item} currentHourString={currentHourString} />
-              
+              <View className='pr-8'>
+                <TimeBlock item={item} currentHourString={currentHourString} />
+              </View>
             </View>
           )}
         />
-        <View>
-          <Link href={'/sign-in'} className='text-white'>Sign in</Link>
-          <Link href={'/sign-up'} className='text-white ml-4'>Sign up</Link>
-        </View>
+
         <View>
           {selectedTask &&
             <Modal
@@ -189,6 +185,7 @@ const HomeScreen = () => {
                   onChangeText={setEditedContent}
                 />
                 <Pressable
+                  className='rounded-full'
                   style={
                     colorScheme === "dark"
                       ? stylesDark.modalButton
@@ -221,47 +218,10 @@ const HomeScreen = () => {
             </Modal>}
         </View>
       </View>
-     {/* <View className='h-[25vh] -mt-10 sm:h-screen  md:pb-20 '>
-        <View className='  flex flex-col justify-center items-center space-y-2 px-2  md:mt-32'>
-          <View >
-            <Pressable
-            
-              className=" shadow-2xl shadow-green-500 py-2.5 px-6 bg-green-200 border border-green-500 rounded-full overflow-hidden"
-            >
-              <Text className='text-black text-2xl text-center '>Discover Peace</Text>
-            </Pressable>
-
-          </View>
-        
-          <View className='hidden md:block'>
-            <ExternalLink className="flex-none text-xl font-semibold text-black dark:text-white" href="https://hytek.org.in" aria-label="Brand">HYTEK</ExternalLink>
-          </View>
-
-
-          <View className="pt-2 md:mt-3 ">
-            <Text className="text-gray-500 dark:text-neutral-500 text-center">Boost productivity with <ExternalLink className="font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-500 dark:hover:text-blue-400" href="https://play.google.com/store/apps/details?id=com.hytek.rize">Rize</ExternalLink> Todo.</Text>
-            <Text className="text-gray-500 dark:text-neutral-500"> © HYTEK. 2024 Rize. All rights reserved.</Text>
-          </View>
-
-
-          <View className="flex flex-row space-x-4 pt-5  ">
-            <ExternalLink className="  " href="https://x.com/hytek21">
-              <TabFontAwesomenew className='dark:text-white' name="x-twitter" />
-            </ExternalLink>
-            <ExternalLink className=" " href="https://github.com/hytek-org">
-              <TabProfileIcon name="github" className='dark:text-white' />
-            </ExternalLink>
-            <ExternalLink className=" " href="https://www.linkedin.com/company/hytek21/">
-              <TabProfileIcon name="linkedin-in" className='dark:text-white' />
-            </ExternalLink>
-            <ExternalLink className=" " href="https://hytek.org.in">
-              <TabProfileIcon name="globe" className='dark:text-white' />
-            </ExternalLink>
-          </View>
-
-
-        </View>
-      </View>  */}
+      <View>
+<Link className='dark:text-white text-lg ' href={'/(auth)/sign-in'}>Sign in</Link>
+<Link className='dark:text-white text-lg '  href={'/(auth)/sign-up'}>Sign up</Link>
+      </View>
     </View>
 
   );
@@ -302,7 +262,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     padding: 10,
     backgroundColor: '#007bff',
-    borderRadius: 5,
+
     alignItems: 'center',
   },
   buttonText: {
@@ -330,7 +290,7 @@ const styles = StyleSheet.create({
   modalButton: {
     backgroundColor: "#0aaf1d",
     padding: 10,
-    borderRadius: 5,
+
     alignItems: "center",
     marginBottom: 10,
     width: 120,
@@ -367,7 +327,7 @@ const stylesDark = StyleSheet.create({
   modalButton: {
     backgroundColor: "#0aaf1d",
     padding: 10,
-    borderRadius: 5,
+
     alignItems: "center",
     marginBottom: 10,
     width: 120,

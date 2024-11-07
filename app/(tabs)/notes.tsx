@@ -8,7 +8,8 @@ import {
   StyleSheet,
   Alert,
   Platform,
-
+  ScrollView,
+  Image,
   useColorScheme
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -16,7 +17,9 @@ import { TabCreateIcon } from "@/components/navigation/TabBarIcon";
 import { TabProfileIcon } from "@/components/navigation/TabBarIcon";
 import MyModal from "@/components/MyModel";
 import FloatingButton from "@/components/FlotingButton";
+import { ExternalLink } from "@/components/ExternalLink";
 
+// Define the Note interface
 interface Note {
   id: string;
   content: string;
@@ -32,6 +35,7 @@ export default function TabTwoScreen() {
   const [editNoteId, setEditNoteId] = useState<string | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const colorScheme = useColorScheme();
+  
   const formatDateToIndian = (date: Date) => {
     const day = date.getDate().toString().padStart(2, "0");
     const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are 0-based
@@ -82,7 +86,6 @@ export default function TabTwoScreen() {
       }
       return;
     }
-
 
     const newNote: Note = {
       id: Date.now().toString(),
@@ -136,6 +139,7 @@ export default function TabTwoScreen() {
     setNotes(updatedNotes);
     saveNotes(updatedNotes);
   };
+
   const openModal = () => {
     if (Platform.OS === 'android' || Platform.OS === 'ios') {
       setModalVisible(true);
@@ -146,15 +150,16 @@ export default function TabTwoScreen() {
 
   const closeModal = () => {
     setModalVisible(false);
-    setEditMode(false); // Reset edit mode when modal is closed
-    setEditNoteId(null); // Reset edit note ID when modal is closed
-    setInput(""); // Clear input when modal is closed
-    setTag(""); // Clear tag when modal is closed
+    setEditMode(false);
+    setEditNoteId(null);
+    setInput("");
+    setTag("");
   };
+
   return (
     <View className="grid grid-cols-1 xl:grid-cols-2 ">
-      <View className="bg-slate-200 dark:bg-neutral-900 xl:pb-20 text-white  h-screen pb-10 xl:h-[100vh]  ">
-        <Text className="text-4xl ml-4 mt-10 text-zinc-800 font-bold dark:text-zinc-50 mb-4">
+      <View className="bg-slate-200 dark:bg-neutral-900 xl:pb-20 text-white  h-screen pb-10 xl:h-[100vh]">
+        <Text className="text-4xl ml-4 mt-12 text-zinc-800 font-bold dark:text-zinc-50 mb-4">
           View Notes
         </Text>
         <FlatList
@@ -162,17 +167,19 @@ export default function TabTwoScreen() {
           keyExtractor={item => item.id}
           renderItem={({ item }) =>
             <View className="flex flex-col bg-white dark:bg-neutral-800 border rounded mx-2 mb-4 py-4">
-              <View className="flex flex-row justify-between  ">
-                <Text className="text-lg ml-2 dark:text-white "> <TabCreateIcon  name={"tago"} size={16} /> {item.tag ? item.tag : 'Default'}</Text>
-                <View className="flex flex-row rounded-lg border border-gray-700 bg-gray-800 py-1 sm:py-2 mr-2">
+              <View className="flex flex-row justify-between">
+                <Text className="text-lg ml-2 dark:text-white">
+                  <TabCreateIcon name={"tago"} size={16} /> {item.tag ? item.tag : 'Default'}
+                </Text>
+                <View className="flex flex-row rounded-lg bg-neutral-100 border border-neutral-700 dark:bg-neutral-700 py-1 sm:py-2 mr-2">
                   <Pressable
-                    className=" rounded-md px-4 py-2 text-sm text-gray-500 hover:text-gray-700 focus:relative"
+                    className="rounded-md px-4 py-2 text-sm text-gray-500 hover:text-gray-700 focus:relative"
                     onPress={() => startEditingNote(item)}
                   >
                     <TabProfileIcon name={"edit"} />
                   </Pressable>
                   <Pressable
-                    className=" rounded bg-white dark:bg-black px-4 py-2 text-sm text-blue-500 shadow-sm focus:relative"
+                    className="rounded bg-white dark:bg-black px-4 py-2 text-sm text-blue-500 shadow-sm focus:relative"
                     onPress={() => deleteNote(item.id)}
                   >
                     <TabCreateIcon name={"delete"} />
@@ -180,53 +187,38 @@ export default function TabTwoScreen() {
                 </View>
               </View>
               <View>
-                <Text className="dark:text-white text-xl ml-4 font-medium xl:text-2xl">
-                  {item.content}
-                </Text>
+                <ScrollView>
+                  <Text className="dark:text-white text-xl ml-4 font-medium xl:text-2xl">
+                    {item.content}
+                  </Text>
+                </ScrollView>
               </View>
               <View>
                 <Text className="dark:text-white ml-4 text-xs">
                   Note added on {item.date}
                 </Text>
               </View>
-            </View>}
+            </View>
+          }
+
+          ListEmptyComponent={() => (
+            <View className="flex-1 items-center justify-center h-full mt-[30vh] ">
+              <Image
+                source={require('../../assets/images/empty-note.png')} 
+                style={{ width: 200, height: 200 }}
+                resizeMode="contain"
+              />
+              <Text className="dark:text-white text-lg mt-4">No notes available</Text>
+              <ExternalLink className="dark:text-white/50" href="https://storyset.com/people">People illustrations by Storyset</ExternalLink>
+            </View>
+          )}
         />
       </View>
 
-      <View className="hidden sm:block bg-gray-100 dark:bg-zinc-900 h-1/4 xl:h-full">
-        <View className="h-32 sm:h-fit">
-          <TextInput
-            value={tag}
-            maxLength={15}
-            onChangeText={setTag}
-            placeholder="Enter a new Label"
-            placeholderTextColor={colorScheme === "dark" ? "#fff" : "#b2aeae"}
-            className="xl:mt-20 p-2  dark:text-white  dark:bg-gray-700  border mx-2 my-2 rounded-lg text-lg xl:text-2xl px-2"
-          />
-          <TextInput
-            value={input}
-            onChangeText={setInput}
-            placeholder="Enter a new note"
-            multiline={true}
-            numberOfLines={3}
-            placeholderTextColor={colorScheme === "dark" ? "#fff" : "#b2aeae"}
-            className="xl:p-4 xl:py-10  dark:text-white  dark:bg-gray-700  border mx-2 my-2 rounded-lg text-lg xl:text-2xl px-2"
-          />
-        </View>
-        <View className="w-52 mx-auto mt-4">
-          <Pressable
-            className=" flex flex-row w-full text-center justify-center items-center   rounded-lg shadow-xl hover:shadow-white/50 space-x-2 bg-yellow-400 px-4 py-2"
-            onPress={editMode ? editNote : addNote}
-          >
-            <TabCreateIcon name={"pluscircleo"} />
-            <Text className="text-xl font-medium ">
-              {editMode ? "Update Note" : "Add Note"}
-            </Text>
-          </Pressable>
-        </View>
-      </View>
-      <View className=" sm:hidden">
-        <FloatingButton onPress={openModal}  />
+      
+
+      <View >
+        <FloatingButton onPress={openModal} />
         <MyModal
           visible={modalVisible}
           onClose={closeModal}
@@ -252,15 +244,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10
   },
   button: {
-    backgroundColor: "#4CAF50", // Button background color
+    backgroundColor: "#4CAF50",
     padding: 10,
     alignItems: "center",
-    borderRadius: 5, // Rounded corners
+    borderRadius: 5,
     marginTop: 10,
     width: 150
   },
   buttonText: {
-    color: "white", // Text color
+    color: "white",
     fontSize: 16,
     fontWeight: "bold"
   },

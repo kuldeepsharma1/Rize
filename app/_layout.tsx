@@ -7,7 +7,7 @@ import 'react-native-reanimated';
 import { initializeTemplates } from '@/utils/templateInitializer'; // Adjust the path as per your project structure
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useColorScheme } from '@/hooks/useColorScheme';
-
+import { TemplateProvider } from '@/context/TemplateContext';
 import "../global.css";
 import { AuthProvider } from '@/context/AuthProvider';
 
@@ -43,17 +43,21 @@ export default function RootLayout() {
   }
 
   return (
-   
-      <SafeAreaProvider>
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+
+    <SafeAreaProvider>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <AuthProvider>
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="+not-found" />
-          </Stack>
-          </AuthProvider>
-        </ThemeProvider>
-      </SafeAreaProvider>
-    
+          <TemplateProvider>
+            <Stack screenOptions={{ headerShown: false }}>
+
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+
+              <Stack.Screen name="+not-found" />
+            </Stack>
+          </TemplateProvider>
+        </AuthProvider>
+      </ThemeProvider>
+    </SafeAreaProvider>
+
   );
 }

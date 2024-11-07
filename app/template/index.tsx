@@ -18,6 +18,7 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
+  TabBarIcon,
   TabCreateIcon,
   TabProfileIcon,
   TabTaskIcon
@@ -125,7 +126,7 @@ export default function Create() {
       Alert.alert("Error", "Description cannot be empty");
       return;
     }
-  
+
     const newTemplate = {
       id: Date.now(),
       title,
@@ -133,10 +134,10 @@ export default function Create() {
       public: false,
       items: initialTemplateItems
     };
-  
+
     const newTemplates = [...templates, newTemplate];
     setTemplates(newTemplates);
-  
+
     try {
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(newTemplates));
       Alert.alert("Success", "Template saved successfully");
@@ -144,21 +145,21 @@ export default function Create() {
       console.error("Failed to save template to local storage", error);
       Alert.alert("Error", "Failed to save template");
     }
-  
+
     setTitle("");
     setDesc("");
   };
-  
-  const saveTemplateData = async (templateId:number, items:TemplateItem[]) => {
+
+  const saveTemplateData = async (templateId: number, items: TemplateItem[]) => {
     const updatedTemplates = templates.map(template => {
       if (template.id === templateId) {
         return { ...template, items };
       }
       return template;
     });
-  
+
     setTemplates(updatedTemplates);
-  
+
     try {
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updatedTemplates));
       Alert.alert("Success", "Template data saved successfully");
@@ -167,7 +168,7 @@ export default function Create() {
       Alert.alert("Error", "Failed to save template data");
     }
   };
-  
+
 
   const selectTemplate = (template: Template) => {
     setCurrentTemplate(template);
@@ -216,7 +217,7 @@ export default function Create() {
   const deleteTemplate = async (templateId: number) => {
     const filteredTemplates = templates.filter(template => template.id !== templateId);
     setTemplates(filteredTemplates);
-  
+
     try {
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(filteredTemplates));
       Alert.alert("Success", "Template deleted successfully");
@@ -225,7 +226,7 @@ export default function Create() {
       Alert.alert("Error", "Failed to delete template");
     }
   };
-  
+
   return (
     <>
       <ScrollView>
@@ -244,7 +245,7 @@ export default function Create() {
               <View className="flex flex-col space-y-4 ">
                 <View className="">
                   <TextInput
-                    className="py-3 px-4 block w-full border my-4 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                    className="py-3 px-4 block w-full border my-4 border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                     placeholder="Enter template title"
                     placeholderTextColor={colorScheme === "dark" ? "#888" : "#ccc"}
                     value={title}
@@ -254,7 +255,7 @@ export default function Create() {
                   <TextInput
                     multiline
                     numberOfLines={3}
-                    className="py-3 px-4 block w-full border my-4 border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+                    className="py-3 px-4 block w-full border my-4 border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
                     placeholder="Enter template Description"
                     placeholderTextColor={colorScheme === "dark" ? "#888" : "#ccc"}
                     value={desc}
@@ -264,11 +265,11 @@ export default function Create() {
                 </View>
 
                 <Pressable
-                  className=" w-full sm:w-2/3  whitespace-nowrap py-3 px-4 inline-flex mx-auto flex-row justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-green-600 text-white hover:bg-green-700 disabled:opacity-50 disabled:pointer-events-none"
+                  className=" w-full sm:w-2/3 rounded-full  whitespace-nowrap py-3 px-4 inline-flex mx-auto flex-row justify-center items-center gap-x-2 text-sm font-semibold  border border-transparent bg-green-600 text-white hover:bg-green-700 disabled:opacity-50 disabled:pointer-events-none"
                   onPress={saveTemplate}
                 >
-                  <TabProfileIcon
-                    name="plus-square"
+                  <TabBarIcon style={{ color: 'white' }}
+                    name="add-circle"
                     className="text-white"
                   />
                   <Text className=" text-white font-semibold text-lg">
@@ -288,7 +289,7 @@ export default function Create() {
             <Text className="text-xl font-normal  dark:text-white px-4 py-4"> Select a template to edit tasks</Text>
             {/* <ScrollView className="sm:h-80 pb-52"> */}
             {templates.filter(template => !template.public).map((template) => (
-              <View key={template.id} className="w-80 rounded-xl border-2 border-gray-100 dark:border-neutral-700 bg-white dark:bg-black mx-4 mb-5">
+              <View key={template.id} className=" rounded-xl border-2 border-gray-100 dark:border-neutral-700 bg-white dark:bg-black mx-4 mb-5">
                 <View className="flex items-start gap-4 p-4 sm:p-6 lg:p-8">
                   <View className="flex flex-row justify-between w-full">
 
@@ -296,13 +297,13 @@ export default function Create() {
                       source={require("../../assets/images/icon.png")}
                       className="w-12 h-12 rounded-lg max-w-10 max-h-10 "
                     />
-                   
-                      <View className="flex flex-row">
+
+                    <View className="flex flex-row">
                       <Pressable
                         onPress={() => openModal(template)}
                         className="mr-2"
                       >
-                        <TabProfileIcon name="edit" className="dark:text-white" />
+                        <TabProfileIcon name="edit" />
                       </Pressable>
                       <Pressable
                         onPress={() => deleteTemplate(template.id)}
@@ -322,20 +323,20 @@ export default function Create() {
                     </Text>
 
                     <View className="mt-2 sm:flex sm:items-center sm:gap-2">
-                      <Text className="text-xs sm:text-gray-500 ">
+                      <Text className="text-xs sm:text-gray-500 dark:text-gray-200 ">
                         created by
-                        <Link href="#" className="font-medium underline hover:text-gray-700"> You </Link>
+                        <Link href="/profile" className="font-medium text-green-500"> You </Link>
                       </Text>
-                      
+
                     </View>
                   </View>
                 </View>
 
                 <View className="flex justify-end items-end ">
                   <View className="  inline-flex flex-row items-center gap-1 rounded-l-full bg-green-600 px-3 py-1.5 text-white">
-                  <TabTaskIcon name="verified" className="text-white " size={16} />
-                  <Text className="text-xs font-medium text-white">Rize</Text>
-                </View>
+                    <TabTaskIcon name="verified" className="text-white  " style={{ color: 'white' }} size={16} />
+                    <Text className="text-xs font-medium text-white">Rize</Text>
+                  </View>
                 </View>
               </View>
 
@@ -367,9 +368,9 @@ export default function Create() {
                   <View className="">
                     <View className="px-14 py-4 md:py-10 ">
                       <View className=" flex flex-row justify-between  ">
-                        <View className="flex flex-row space-x-4">
+                        <View className="flex flex-row gap-4">
                           <Pressable
-                            className={`inline-flex flex-row space-x-2 p-2 md:py-4 rounded-lg justify-center  ${selectedTab == "morning"
+                            className={`inline-flex flex-row  p-2 md:py-4 rounded-full  justify-center items-center  ${selectedTab == "morning"
                               ? "bg-[#0c891b]  "
                               : "bg-transparent border dark:border-white hover:bg-[#0aaf1d] text-neutral-950"
                               } `}
@@ -377,26 +378,12 @@ export default function Create() {
                           >
                             <TabTaskIcon
                               name="wb-sunny"
-                              className={`${selectedTab == "morning"
-                                ? "text-white"
-                                : "dark:text-white"
-                                }`}
+                            
                             />
-                            <Text
-                              className={`hidden  md:inline-flex  text-lg font-medium ${selectedTab == "morning" ? "text-white" : ""
-                                }`}
-                            >
-                              Morning
-                            </Text>
-                            <Text
-                              className={`hidden  md:block text-lg font-medium ${selectedTab == "morning" ? "text-white" : ""
-                                }`}
-                            >
-                              Tasks
-                            </Text>
+
                           </Pressable>
                           <Pressable
-                            className={`inline-flex flex-row space-x-2 p-2 md:py-4 rounded-lg justify-center  ${selectedTab == "afternoon"
+                            className={`inline-flex flex-row  p-2 md:py-4 rounded-full justify-center items-center  ${selectedTab == "afternoon"
                               ? "bg-[#0c891b]  "
                               : "bg-transparent border dark:border-white hover:bg-[#0aaf1d] text-neutral-950 dark:text-white"
                               } `}
@@ -404,32 +391,14 @@ export default function Create() {
                           >
                             <TabTaskIcon
                               name="nights-stay"
-                              className={`${selectedTab == "afternoon"
-                                ? "text-white"
-                                : "dark:text-white"
-                                }`}
                             />
-                            <Text
-                              className={` hidden md:inline-flex text-lg font-medium ${selectedTab == "afternoon"
-                                ? "text-white"
-                                : "dark:text-white"
-                                }`}
-                            >
-                              Afternoon
-                            </Text>
-                            <Text
-                              className={`hidden  md:block text-lg font-medium ${selectedTab == "afternoon"
-                                ? "text-white"
-                                : "dark:text-white"
-                                }`}
-                            >
-                              Tasks
-                            </Text>
+
+
                           </Pressable>
                         </View>
                         <View>
                           <Pressable
-                            className="bg-green-500  w-24 rounded-lg inline-flex flex-row space-x-2 p-2   "
+                            className="bg-green-500  w-full rounded-full p-2 px-6 border-2  border-zinc-200  dark:border-zinc-50   text-center   "
                             onPress={() => {
                               if (currentTemplate) {
                                 saveTemplateData(currentTemplate.id, currentTemplate.items);
@@ -437,8 +406,8 @@ export default function Create() {
                               setModalVisible(false);
                             }}
                           >
-                            <TabProfileIcon name="save" className="dark:text-white" />
-                            <Text className="dark:text-white text-xl font-semibold  ">
+
+                            <Text className="text-white text-xl font-semibold  ">
                               Save
                             </Text>
                           </Pressable>

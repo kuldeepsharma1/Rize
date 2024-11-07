@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Pressable, ActivityIndicator } from 'react-native';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
-import { auth } from '../firebase.config';
+import { auth } from '../../firebase.config';
 import { useRouter } from 'expo-router';
-import { useAuth } from '../context/AuthProvider';
+import { useAuth } from '@/context/AuthProvider';
 
 const Signup: React.FC = () => {
     const { setUser } = useAuth();
@@ -79,7 +79,7 @@ const Signup: React.FC = () => {
             )}
 
             {!emailSent ? (
-                <Pressable onPress={handleSignup} disabled={loading} style={{ backgroundColor: '#007BFF', padding: 12, borderRadius: 8, width: '100%' }}>
+                <Pressable onPress={handleSignup} disabled={loading} className='bg-green-600 p-3 rounded-full w-full' >
                     {loading ? (
                         <ActivityIndicator color="#fff" />
                     ) : (
@@ -95,7 +95,7 @@ const Signup: React.FC = () => {
             <View style={{ marginTop: 16 }}>
                 <Text>
                     Already have an account?{' '}
-                    <Text style={{ color: '#007BFF', fontWeight: 'bold' }} onPress={() => router.push('/sign-in')}>Login</Text>
+                    <Text style={{ color: '#007BFF', fontWeight: 'bold' }} onPress={() => router.push('/(auth)/sign-in')}>Sign In</Text>
                 </Text>
             </View>
         </View>

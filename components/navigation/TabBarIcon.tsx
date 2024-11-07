@@ -1,44 +1,87 @@
 import React from 'react';
-import { useColorScheme, ColorSchemeName, StyleProp, TextStyle } from 'react-native';
+import { StyleProp, TextStyle, useColorScheme } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { IconProps } from '@expo/vector-icons/build/createIconSet';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { FontAwesome6 } from '@expo/vector-icons';
+import { View, Text } from 'react-native'; // Ensure to use NativeWind utilities
 
-// Define a helper function to get styles based on the theme
-const getColorSchemeStyle = (colorScheme: ColorSchemeName): StyleProp<TextStyle> => ({
-  color: colorScheme === 'dark' ? '#ffffff' : '#000000',
-});
-
-// Define type for icon props with style support, constraining T to 'string'
+// Define type for icon props with style, color, and className support
 type CustomIconProps<T extends string> = IconProps<T> & {
   style?: StyleProp<TextStyle>;
+  color?: string; // Allow custom color
+  className?: string; // Allow custom tailwind-like className
 };
 
-// Icon components with conditional styling
-export function TabBarIcon({ style, ...rest }: CustomIconProps<React.ComponentProps<typeof Ionicons>['name']>) {
-  const colorScheme = useColorScheme();
-  return <Ionicons size={28} style={[{ marginBottom: -3 }, style, getColorSchemeStyle(colorScheme)]} {...rest} />;
+// Default icon component with conditional styling based on theme and explicit color support
+export function TabBarIcon({ style, color, className, ...rest }: CustomIconProps<React.ComponentProps<typeof Ionicons>['name']>) {
+  const themeColor = useColorScheme() === 'dark' ? 'white' : 'black';  // Default theme-based color
+  const iconColor = color || themeColor;  // Use the provided color or fallback to theme color
+
+  return (
+    <Ionicons
+      className={className} // Use Tailwind-like class names for styling
+      size={28}
+      style={[{ marginBottom: -3, color: iconColor }, style]} // Apply conditional color
+      {...rest}
+    />
+  );
 }
 
-export function TabCreateIcon({ style, ...rest }: CustomIconProps<React.ComponentProps<typeof AntDesign>['name']>) {
-  const colorScheme = useColorScheme();
-  return <AntDesign size={28} style={[{ marginBottom: -3 }, style, getColorSchemeStyle(colorScheme)]} {...rest} />;
+export function TabCreateIcon({ style, color, className, ...rest }: CustomIconProps<React.ComponentProps<typeof AntDesign>['name']>) {
+  const themeColor = useColorScheme() === 'dark' ? 'white' : 'black';
+  const iconColor = color || themeColor;
+
+  return (
+    <AntDesign
+      className={className}
+      size={28}
+      style={[{ marginBottom: -3, color: iconColor }, style]}
+      {...rest}
+    />
+  );
 }
 
-export function TabTaskIcon({ style, ...rest }: CustomIconProps<React.ComponentProps<typeof MaterialIcons>['name']>) {
-  const colorScheme = useColorScheme();
-  return <MaterialIcons size={28} style={[{ marginBottom: -3 }, style, getColorSchemeStyle(colorScheme)]} {...rest} />;
+export function TabTaskIcon({ style, color, className, ...rest }: CustomIconProps<React.ComponentProps<typeof MaterialIcons>['name']>) {
+  const themeColor = useColorScheme() === 'dark' ? 'white' : 'black';
+  const iconColor = color || themeColor;
+
+  return (
+    <MaterialIcons
+      className={className}
+      size={28}
+      style={[{ marginBottom: -3, color: iconColor }, style]}
+      {...rest}
+    />
+  );
 }
 
-export function TabProfileIcon({ style, ...rest }: CustomIconProps<React.ComponentProps<typeof FontAwesome5>['name']>) {
-  const colorScheme = useColorScheme();
-  return <FontAwesome5 size={28} style={[{ marginBottom: -3 }, style, getColorSchemeStyle(colorScheme)]} {...rest} />;
+export function TabProfileIcon({ style, color, className, ...rest }: CustomIconProps<React.ComponentProps<typeof FontAwesome5>['name']>) {
+  const themeColor = useColorScheme() === 'dark' ? 'white' : 'black';
+  const iconColor = color || themeColor;
+
+  return (
+    <FontAwesome5
+      className={className}
+      size={28}
+      style={[{ marginBottom: -3, color: iconColor }, style]}
+      {...rest}
+    />
+  );
 }
 
-export function TabFontAwesomenew({ style, ...rest }: CustomIconProps<React.ComponentProps<typeof FontAwesome6>['name']>) {
-  const colorScheme = useColorScheme();
-  return <FontAwesome6 size={28} style={[{ marginBottom: -3 }, style, getColorSchemeStyle(colorScheme)]} {...rest} />;
+export function TabFontAwesomenew({ style, color, className, ...rest }: CustomIconProps<React.ComponentProps<typeof FontAwesome6>['name']>) {
+  const themeColor = useColorScheme() === 'dark' ? 'white' : 'black';
+  const iconColor = color || themeColor;
+
+  return (
+    <FontAwesome6
+      className={className}
+      size={28}
+      style={[{ marginBottom: -3, color: iconColor }, style]}
+      {...rest}
+    />
+  );
 }

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Pressable, ActivityIndicator } from 'react-native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase.config';
+import { auth } from '../../firebase.config';
 import { useRouter } from 'expo-router';
-import { useAuth } from '../context/AuthProvider';
+import { useAuth } from '@/context/AuthProvider';
 
 const SignIn: React.FC = () => {
     const { setUser } = useAuth();
@@ -60,7 +60,7 @@ const SignIn: React.FC = () => {
                 <Text style={{ color: 'red', marginBottom: 8 }}>{errorMessage}</Text>
             )}
 
-            <Pressable onPress={handleSignIn} disabled={loading} style={{ backgroundColor: '#007BFF', padding: 12, borderRadius: 8, width: '100%' }}>
+            <Pressable onPress={handleSignIn} disabled={loading} className='bg-green-600 p-3 rounded-full w-full'>
                 {loading ? (
                     <ActivityIndicator color="#fff" />
                 ) : (

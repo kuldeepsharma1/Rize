@@ -185,9 +185,9 @@ export default function TabTwoScreen() {
       </Text>
       <View className="flex flex-col   md:flex-row">
         <View className="flex flex-row justify-center items-center  mb-4 md:w-1/4 md:flex-col md:justify-normal ">
-          <View className="flex flex-row  space-x-2 md:flex-col md:space-x-0 md:space-y-4">
+          <View className="flex flex-row  gap-4">
             <Pressable
-              className={`inline-flex flex-row space-x-2 p-2 md:py-4 rounded-lg justify-center  ${selectedTab ==
+              className={`inline-flex flex-row gap-2 p-2 px-4 md:py-4 rounded-full justify-center items-center ${selectedTab ==
                 "morning"
                 ? "bg-[#0c891b]  "
                 : "bg-transparent border dark:border-white hover:bg-[#0aaf1d] text-neutral-950"} `}
@@ -205,17 +205,10 @@ export default function TabTwoScreen() {
               >
                 Morning
               </Text>
-              <Text
-                className={`hidden  md:block text-lg font-medium ${selectedTab ==
-                  "morning"
-                  ? "text-white"
-                  : "dark:text-white"}`}
-              >
-                Tasks
-              </Text>
+             
             </Pressable>
             <Pressable
-              className={`inline-flex flex-row space-x-2 p-2 md:py-4 rounded-lg justify-center  ${selectedTab ==
+              className={`inline-flex flex-row gap-2 p-2 px-4 md:py-4 rounded-full justify-center items-center  ${selectedTab ==
                 "afternoon"
                 ? "bg-[#0c891b]  "
                 : "bg-transparent border dark:border-white hover:bg-[#0aaf1d] text-neutral-950"} `}
@@ -233,14 +226,7 @@ export default function TabTwoScreen() {
               >
                 Afternoon
               </Text>
-              <Text
-                className={`hidden  md:block text-lg font-medium ${selectedTab ==
-                  "afternoon"
-                  ? "text-white"
-                  : "dark:text-white"}`}
-              >
-                Tasks
-              </Text>
+            
             </Pressable>
           </View>
         </View>
