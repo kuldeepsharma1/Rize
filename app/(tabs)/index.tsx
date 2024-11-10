@@ -205,22 +205,18 @@ const HomeScreen = () => {
                   </Text>
                 </Pressable>
                 <Pressable
-                  className="mx-auto mt-4 hover:underline"
+                  className="mx-auto mt-4 "
                   onPress={() => setModalVisible(false)}
-                >
-                  <Text
-                    className="text-lg hover:underline font-medium dark:text-white"
-                  >
-                    Cancel
-                  </Text>
+                ><Text className="text-xl p-2 font-medium dark:text-white">Cancel</Text>
+
                 </Pressable>
+
               </View>
             </Modal>}
         </View>
       </View>
       <View>
-<Link className='dark:text-white text-lg ' href={'/(auth)/sign-in'}>Sign in</Link>
-<Link className='dark:text-white text-lg '  href={'/(auth)/sign-up'}>Sign up</Link>
+
       </View>
     </View>
 

@@ -6,7 +6,6 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { FontAwesome6 } from '@expo/vector-icons';
-import { View, Text } from 'react-native'; // Ensure to use NativeWind utilities
 
 // Define type for icon props with style, color, and className support
 type CustomIconProps<T extends string> = IconProps<T> & {

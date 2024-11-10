@@ -5,9 +5,9 @@ import {
   View,
   Text,
   ScrollView,
-  Alert,
+
   Pressable,
-  TouchableOpacity,
+
   ActivityIndicator,
 } from "react-native";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
@@ -80,7 +80,7 @@ const TabTwoScreen = () => {
             <Text className="text-xl font-medium text-white">Active</Text>
           </View>
         ) : (
-          <Pressable disabled={loading} className="inline-flex flex-row items-center gap-1 rounded-l-full bg-transparent px-3 py-1.5 text-black dark:text-white border-l-2 border-t-2 hover:border-green-500 border-gray-100 dark:border-neutral-700" onPress={() => {  console.log("Button Pressed"); addTemplateToDailyTasks(template)}}>
+          <Pressable disabled={loading} className="inline-flex flex-row items-center gap-1 rounded-l-full bg-transparent px-3 py-1.5 text-black dark:text-white border-l-2 border-t-2 hover:border-green-500 border-gray-100 dark:border-neutral-700" onPress={() => addTemplateToDailyTasks(template)}>
          
           <TabTaskIcon name="add-circle" size={32} />
           {loading ? (

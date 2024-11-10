@@ -205,7 +205,7 @@ export default function TabTwoScreen() {
               >
                 Morning
               </Text>
-             
+
             </Pressable>
             <Pressable
               className={`inline-flex flex-row gap-2 p-2 px-4 md:py-4 rounded-full justify-center items-center  ${selectedTab ==
@@ -226,7 +226,7 @@ export default function TabTwoScreen() {
               >
                 Afternoon
               </Text>
-            
+
             </Pressable>
           </View>
         </View>
@@ -285,6 +285,7 @@ export default function TabTwoScreen() {
                 onChangeText={setEditedContent}
               />
               <Pressable
+               className='rounded-full'
                 style={
                   colorScheme === "dark"
                     ? stylesDark.modalButton
@@ -304,14 +305,10 @@ export default function TabTwoScreen() {
                 </Text>
               </Pressable>
               <Pressable
-                className="mx-auto mt-4 hover:underline"
+                className="mx-auto mt-4 "
                 onPress={() => setModalVisible(false)}
-              >
-                <Text
-                  className="text-lg hover:underline font-medium dark:text-white"
-                >
-                  Cancel
-                </Text>
+              ><Text className="text-xl p-2 font-medium dark:text-white">Cancel</Text>
+                
               </Pressable>
             </View>
           </Modal>}
@@ -336,13 +333,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ccc",
     padding: 10,
-    borderRadius: 5,
+   
     marginBottom: 20
   },
   modalButton: {
     backgroundColor: "#0aaf1d",
     padding: 10,
-    borderRadius: 5,
+   
     alignItems: "center",
     marginBottom: 10,
     width: 120,
@@ -371,14 +368,14 @@ const stylesDark = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#444",
     padding: 10,
-    borderRadius: 5,
+   
     marginBottom: 20,
     color: "#fff"
   },
   modalButton: {
     backgroundColor: "#0aaf1d",
     padding: 10,
-    borderRadius: 5,
+   
     alignItems: "center",
     marginBottom: 10,
     width: 120,

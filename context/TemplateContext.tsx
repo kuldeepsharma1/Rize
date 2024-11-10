@@ -42,7 +42,7 @@ export const TemplateProvider: React.FC<React.PropsWithChildren<{}>> = ({ childr
       try {
         const storedTemplates = await AsyncStorage.getItem(STORAGE_KEY);
         const storedDailyTasksId = await AsyncStorage.getItem(TASKS_KEY_ID);
-        console.log('Hello')
+       
         if (storedTemplates) {
           setTemplates(JSON.parse(storedTemplates));
         }

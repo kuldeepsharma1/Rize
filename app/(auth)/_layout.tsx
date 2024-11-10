@@ -8,7 +8,7 @@ import { StatusBar } from "expo-status-bar";
 const AuthLayout = () => {
   const { loading, isLogged } = useAuth();
 
-  if (!loading && isLogged) return <Redirect href="/" />;
+  if (!loading && isLogged) return <Redirect href="/(tabs)/" />;
 
   return (
     <>
@@ -23,6 +23,13 @@ const AuthLayout = () => {
           name="sign-up"
           options={{
             headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="forgot"
+          options={{
+            headerShown: true,
+            title:"Forgot Password"
           }}
         />
       </Stack>
