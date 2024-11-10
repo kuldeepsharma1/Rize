@@ -17,7 +17,6 @@ export default function Settings() {
   const [loadingacmanage, setLoadingAcmanage] = useState<boolean>(false);
 
   const [name, setName] = useState(user?.displayName || '');
-  const [number, setNumber] = useState(user?.phoneNumber || '');
   const [email, setEmail] = useState(user?.email || '');
   const [darkMode, setDarkMode] = useState(colorScheme === 'dark');
   const [pushNotifications, setPushNotifications] = useState(true);
@@ -76,18 +75,7 @@ export default function Settings() {
               />
             </View>
 
-            <View className="mb-4">
-              <Text className="text-gray-800 dark:text-white mb-2">Phone Number:</Text>
-              <TextInput
-                value={number}
-                onChangeText={setNumber}
-                placeholder="Enter your phone number"
-                placeholderTextColor="#ccc"
-                keyboardType="number-pad"
-                maxLength={10}
-                className="p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-600 text-sm text-gray-800 dark:text-white"
-              />
-            </View>
+          
 
             <View className="mb-4">
               <Text className="text-gray-800 dark:text-white mb-2">Email:</Text>

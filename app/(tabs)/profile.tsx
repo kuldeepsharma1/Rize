@@ -56,7 +56,7 @@ export default function ProfileScreen() {
               styles.verifiedIcon
             } />}
           </View>
-          <ThemedText style={styles.infoText}>Phone: {user?.phoneNumber || 'Not Available'}</ThemedText>
+         
           <Link href="/settings" style={styles.settingsLink}>
             <Ionicons name="settings-outline" size={24} color={colorScheme === "dark"
               ? '#fff'
