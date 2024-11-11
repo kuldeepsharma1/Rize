@@ -97,6 +97,9 @@ export default function ProfileScreen() {
           )}
         </View>
       </View>
+      <View>
+      <Link href={'/podcast'} className='text-center pt-20'>Go to podcast</Link>
+    </View>
     </ParallaxScrollView>
   );
 }

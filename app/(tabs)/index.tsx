@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, TextInput, Text, useColorScheme, FlatList, StyleSheet, Modal, Pressable } from 'react-native';
+import { View, TextInput, Text, useColorScheme, FlatList, StyleSheet, Modal, Pressable, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TabProfileIcon } from "@/components/navigation/TabBarIcon";
 import { Link } from 'expo-router';
@@ -99,126 +99,104 @@ const HomeScreen = () => {
   }
   return (
 
-    <View className='grid grid-cols-1 md:grid-cols-2  '>
-      <View className='h-[75vh] sm:h-screen md:pb-20 '>
-        <Text className='text-2xl sm:text-4xl pt-12 pb-4 text-center dark:text-neutral-100'>Manage Tasks</Text>
-        <FlatList
-          data={latestTasks}
-          keyExtractor={(item) => item.id.toString()}
-          showsVerticalScrollIndicator={true}
-          renderItem={({ item }) => (
-            <View
-              className={`bg-white border border-t-4  ${item.time === currentHourString
-                ? "border-t-green-600 dark:border-t-green-500"
-                : " "}
-                ${item.time == nextHour
-                  ? "border-t-red-600 dark:border-t-red-500"
-                  : " "}  ${item.time == prevHour
-                    ? "border-t-yellow-600 dark:border-t-yellow-500"
-                    : " "}
-            shadow-sm rounded-[32px] dark:bg-neutral-900   dark:shadow-neutral-700/70
-            mb-5 px-4 py-4 mx-4`}
-            >
-
-              <View className="flex flex-row justify-between ">
-                <Text className="text-xs sm:text-sm text-gray-800 dark:text-white">
-                  {convertHourTo12HourFormat(item.time)}
-                </Text>
-                {item.time == currentHourString && (
-                  <Pressable onPress={() => openModal(item)} >
-                    <TabProfileIcon name="edit" className="dark:text-white" />
-                  </Pressable>
-                )}
-                {item.time == nextHour && (
-                  <Pressable onPress={() => openModal(item)}>
-                    <TabProfileIcon name="edit" className="dark:text-white" />
-                  </Pressable>
-                )}
-              </View>
-              <View className="p-2 md:p-5 ">
-                <Text className="text-base font-semibold text-gray-800 dark:text-white">
-                  {item.content}
-                </Text>
-
-              </View>
-              <View className='pr-8'>
-                <TimeBlock item={item} currentHourString={currentHourString} />
-              </View>
-            </View>
-          )}
-        />
-
-        <View>
-          {selectedTask &&
-            <Modal
-              visible={modalVisible}
-              animationType="slide"
-              onRequestClose={() => setModalVisible(false)}
-            >
-              <View
-                style={
-                  colorScheme === "dark"
-                    ? stylesDark.modalContainer
-                    : styles.modalContainer
-                }
-              >
-                <Text
-                  style={
-                    colorScheme === "dark"
-                      ? stylesDark.modalTitle
-                      : styles.modalTitle
-                  }
-                >
-                  Edit Task
-                </Text>
-                <TextInput
-                  style={
-                    colorScheme === "dark"
-                      ? stylesDark.modalInput
-                      : styles.modalInput
-                  }
-                  maxLength={200}
-                  multiline
-                  className="text-xl"
-                  numberOfLines={3}
-                  value={editedContent}
-                  onChangeText={setEditedContent}
-                />
-                <Pressable
-                  className='rounded-full'
-                  style={
-                    colorScheme === "dark"
-                      ? stylesDark.modalButton
-                      : styles.modalButton
-                  }
-                  onPress={saveEditedTask}
-                >
-                  <Text
-                    className="text-lg font-medium dark:text-white"
-                    style={
-                      colorScheme === "dark"
-                        ? stylesDark.modalButtonText
-                        : styles.modalButtonText
-                    }
-                  >
-                    Save
-                  </Text>
-                </Pressable>
-                <Pressable
-                  className="mx-auto mt-4 "
-                  onPress={() => setModalVisible(false)}
-                ><Text className="text-xl p-2 font-medium dark:text-white">Cancel</Text>
-
-                </Pressable>
-
-              </View>
-            </Modal>}
+    <View className='grid grid-cols-1 md:grid-cols-2'>
+    <FlatList
+      data={latestTasks}
+      keyExtractor={(item) => item.id.toString()}
+      showsVerticalScrollIndicator={true}
+      ListHeaderComponent={() => (
+        <View >
+          <Text className='text-2xl sm:text-4xl pt-12 pb-4 text-center dark:text-neutral-100'>
+            Manage Tasks
+          </Text>
         </View>
-      </View>
-      <View>
-
-      </View>
-    </View>
+      )}
+      renderItem={({ item }) => (
+        <View
+          className={`bg-white border border-t-4  ${item.time === currentHourString
+            ? "border-t-green-600 dark:border-t-green-500"
+            : " "}
+            ${item.time == nextHour
+            ? "border-t-red-600 dark:border-t-red-500"
+            : " "}  ${item.time == prevHour
+            ? "border-t-yellow-600 dark:border-t-yellow-500"
+            : " "}
+          shadow-sm rounded-[32px] dark:bg-neutral-900 dark:shadow-neutral-700/70
+          mb-5 px-4 py-4 mx-4`}
+        >
+          <View className="flex flex-row justify-between ">
+            <Text className="text-xs sm:text-sm text-gray-800 dark:text-white">
+              {convertHourTo12HourFormat(item.time)}
+            </Text>
+            {(item.time == currentHourString || item.time == nextHour) && (
+              <Pressable onPress={() => openModal(item)}>
+                <TabProfileIcon name="edit" className="dark:text-white" />
+              </Pressable>
+            )}
+          </View>
+          <View className="p-2 md:p-5 ">
+            <Text className="text-base font-semibold text-gray-800 dark:text-white">
+              {item.content}
+            </Text>
+          </View>
+          <View className='pr-8'>
+            <TimeBlock item={item} currentHourString={currentHourString} />
+          </View>
+        </View>
+      )}
+    />
+    
+  
+    {/* Modal rendered outside FlatList to prevent infinite rendering */}
+    {selectedTask && (
+      <Modal
+        visible={modalVisible}
+        animationType="slide"
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View
+          style={
+            colorScheme === "dark"
+              ? stylesDark.modalContainer
+              : styles.modalContainer
+          }
+        >
+          <Text
+            style={
+              colorScheme === "dark"
+                ? stylesDark.modalTitle
+                : styles.modalTitle
+            }
+          >
+            Edit Task
+          </Text>
+          <TextInput
+            style={
+              colorScheme === "dark"
+                ? stylesDark.modalInput
+                : styles.modalInput
+            }
+            maxLength={200}
+            multiline
+            className="text-xl"
+            numberOfLines={3}
+            value={editedContent}
+            onChangeText={setEditedContent}
+          />
+        
+          <Pressable onPress={saveEditedTask}
+              className='bg-green-500 py-4  rounded-full w-full'
+            >
+              <Text className='text-center text-xl text-white font-semibold'>Save</Text>
+            </Pressable>
+            <Pressable onPress={() => setModalVisible(false)}>
+              <Text className="text-xl text-center p-2 font-medium dark:text-white">Cancel</Text>
+            </Pressable>
+        </View>
+      </Modal>
+    )}
+  </View>
+  
 
   );
 };
@@ -283,18 +261,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 20
   },
-  modalButton: {
-    backgroundColor: "#0aaf1d",
-    padding: 10,
-
-    alignItems: "center",
-    marginBottom: 10,
-    width: 120,
-    marginHorizontal: 'auto'
-  },
-  modalButtonText: {
-    color: "#fff"
-  }
+ 
 });
 
 
@@ -320,18 +287,7 @@ const stylesDark = StyleSheet.create({
     marginBottom: 20,
     color: "#fff"
   },
-  modalButton: {
-    backgroundColor: "#0aaf1d",
-    padding: 10,
 
-    alignItems: "center",
-    marginBottom: 10,
-    width: 120,
-    marginHorizontal: 'auto'
-  },
-  modalButtonText: {
-    color: "#fff"
-  }
 });
 
 

@@ -13,7 +13,7 @@ import {
   useColorScheme
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { TabCreateIcon } from "@/components/navigation/TabBarIcon";
+import { TabCreateIcon, TabTaskIcon } from "@/components/navigation/TabBarIcon";
 import { TabProfileIcon } from "@/components/navigation/TabBarIcon";
 import MyModal from "@/components/MyModel";
 import FloatingButton from "@/components/FlotingButton";
@@ -176,7 +176,7 @@ export default function TabTwoScreen() {
                     className="rounded-md px-4 py-2 text-sm text-gray-500 hover:text-gray-700 focus:relative"
                     onPress={() => startEditingNote(item)}
                   >
-                    <TabProfileIcon name={"edit"} />
+                    <TabTaskIcon name="edit-note" />
                   </Pressable>
                   <Pressable
                     className="rounded bg-white dark:bg-black px-4 py-2 text-sm text-blue-500 shadow-sm focus:relative"

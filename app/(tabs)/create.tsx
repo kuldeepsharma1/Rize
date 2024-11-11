@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import {
   Image,
   useColorScheme,
   View,
   Text,
   ScrollView,
-
   Pressable,
-
   ActivityIndicator,
 } from "react-native";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
@@ -33,7 +31,7 @@ interface Template {
 }
 
 const TabTwoScreen = () => {
-  const { templates, dailyTasks, activeTemplateId, addTemplateToDailyTasks,loading } = useTemplateContext();
+  const { templates, dailyTasks, activeTemplateId, addTemplateToDailyTasks, loading } = useTemplateContext();
   const colorScheme = useColorScheme();
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -44,7 +42,7 @@ const TabTwoScreen = () => {
   const renderTemplate = (template: Template) => (
     <View key={template.id} className="sm:w-80 rounded-xl border-2 border-gray-100 dark:border-neutral-700 bg-white dark:bg-black">
       <View className="flex items-start gap-4 p-4 sm:p-6 lg:p-8">
-   
+
         <View className="flex flex-row justify-between w-full">
           <Image
             source={require("../../assets/images/icon.png")}
@@ -52,11 +50,23 @@ const TabTwoScreen = () => {
           />
           <View className="flex flex-row">
             {activeTemplateId === template.id ? (
-              <Pressable onPress={() => handleNotificationSetup(template.id)}>
-                <TabTaskIcon name="notification-add" className="mr-4 sm:mr-2 text-black dark:text-white" />
-              </Pressable>
+              <View className="flex flex-row items-center">
+                <Pressable onPress={() => handleNotificationSetup(template.id)}>
+                  <TabTaskIcon name="notification-add" className="mr-4 sm:mr-2 text-black dark:text-white" />
+                </Pressable>
+                <Link href={{
+                  pathname: '/template/edit/[id]',
+                  params: { id: template.id }
+                }} className="ml-2" ><TabTaskIcon name="mode-edit-outline" /></Link>
+              </View>
             ) : (
-              <TabTaskIcon name="notifications-off" className="mr-4 sm:mr-2 text-black dark:text-white" />
+              <View className="flex flex-row items-center">
+                <TabTaskIcon name="notifications-off" className="mr-4 sm:mr-2 text-black dark:text-white" />
+                <Link href={{
+                  pathname: '/template/edit/[id]',
+                  params: { id: template.id }
+                }} className="ml-2" ><TabTaskIcon name="mode-edit-outline" /></Link>
+              </View>
             )}
           </View>
         </View>
@@ -81,17 +91,17 @@ const TabTwoScreen = () => {
           </View>
         ) : (
           <Pressable disabled={loading} className="inline-flex flex-row items-center gap-1 rounded-l-full bg-transparent px-3 py-1.5 text-black dark:text-white border-l-2 border-t-2 hover:border-green-500 border-gray-100 dark:border-neutral-700" onPress={() => addTemplateToDailyTasks(template)}>
-         
-          <TabTaskIcon name="add-circle" size={32} />
-          {loading ? (
-                <ActivityIndicator color="#ff0000/" />
+
+            <TabTaskIcon name="add-circle" size={32} />
+            {loading ? (
+              <ActivityIndicator color="#ff0000/" />
             ) : (
               <Text className="text-xl font-medium text-black dark:text-white">Add to Daily Tasks</Text>
             )}
- 
-      </Pressable>
+
+          </Pressable>
         )}
-       
+
       </View>
     </View>
   );

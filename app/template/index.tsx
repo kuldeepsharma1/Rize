@@ -1,20 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   TextInput,
   Pressable,
-  StyleSheet,
   Modal,
-  FlatList,
   Alert,
-  KeyboardAvoidingView,
   useColorScheme,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Platform,
   ScrollView,
-  Image
+  Image,
+  ActivityIndicator,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
@@ -24,6 +19,7 @@ import {
   TabTaskIcon
 } from "@/components/navigation/TabBarIcon";
 import { Link } from "expo-router";
+import { useTemplateContext } from "@/context/TemplateContext";
 
 const STORAGE_KEY = "Templates";
 
@@ -68,29 +64,15 @@ export default function Create() {
     { id: 23, content: "", time: "22" },
     { id: 24, content: "", time: "23" }
   ];
+  const { templates, setTemplates, deleteTemplate } = useTemplateContext();
   const [modalVisible, setModalVisible] = useState(false);
-  const [templates, setTemplates] = useState<Template[]>([]);
   const [currentTemplate, setCurrentTemplate] = useState<Template | null>(null);
   const [selectedTab, setSelectedTab] = useState("morning");
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const colorScheme = useColorScheme();
+  const [loading, setLoading] = useState<boolean>(false);
 
-  useEffect(() => {
-    const loadTemplates = async () => {
-      try {
-        const storedTemplates = await AsyncStorage.getItem(STORAGE_KEY);
-        if (storedTemplates) {
-          setTemplates(JSON.parse(storedTemplates));
-        }
-      } catch (error) {
-        console.error("Failed to load templates from local storage", error);
-        Alert.alert("Error", "Failed to load templates");
-      }
-    };
-
-    loadTemplates();
-  }, []);
 
   const updateTemplateItem = async (
     id: number,
@@ -118,6 +100,7 @@ export default function Create() {
     }
   };
   const saveTemplate = async () => {
+    setLoading(true);
     if (!title) {
       Alert.alert("Error", "Title cannot be empty");
       return;
@@ -144,6 +127,8 @@ export default function Create() {
     } catch (error) {
       console.error("Failed to save template to local storage", error);
       Alert.alert("Error", "Failed to save template");
+    } finally {
+      setLoading(false);
     }
 
     setTitle("");
@@ -214,18 +199,7 @@ export default function Create() {
     selectTemplate(template);
     setModalVisible(true);
   };
-  const deleteTemplate = async (templateId: number) => {
-    const filteredTemplates = templates.filter(template => template.id !== templateId);
-    setTemplates(filteredTemplates);
 
-    try {
-      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(filteredTemplates));
-      Alert.alert("Success", "Template deleted successfully");
-    } catch (error) {
-      console.error("Failed to delete template from local storage", error);
-      Alert.alert("Error", "Failed to delete template");
-    }
-  };
 
   return (
     <>
@@ -268,10 +242,15 @@ export default function Create() {
                   className=" w-full sm:w-2/3 rounded-full  whitespace-nowrap py-3 px-4 inline-flex mx-auto flex-row justify-center items-center gap-x-2 text-sm font-semibold  border border-transparent bg-green-600 text-white hover:bg-green-700 disabled:opacity-50 disabled:pointer-events-none"
                   onPress={saveTemplate}
                 >
-                  <TabBarIcon style={{ color: 'white' }}
-                    name="add-circle"
-                    className="text-white"
-                  />
+                  {loading ? (
+                    <ActivityIndicator color="#fff" />
+                  ) : (
+                    <TabBarIcon style={{ color: 'white' }}
+                      name="add-circle"
+                      className="text-white"
+                    />
+                  )}
+
                   <Text className=" text-white font-semibold text-lg">
                     Add new Template
                   </Text>
@@ -288,7 +267,7 @@ export default function Create() {
           <View className="">
             <Text className="text-xl font-normal  dark:text-white px-4 py-4"> Select a template to edit tasks</Text>
             {/* <ScrollView className="sm:h-80 pb-52"> */}
-            {templates.filter(template => !template.public).map((template) => (
+            {templates.filter((template) => !template.public).map((template) => (
               <View key={template.id} className=" rounded-xl border-2 border-gray-100 dark:border-neutral-700 bg-white dark:bg-black mx-4 mb-5">
                 <View className="flex items-start gap-4 p-4 sm:p-6 lg:p-8">
                   <View className="flex flex-row justify-between w-full">
@@ -378,7 +357,7 @@ export default function Create() {
                           >
                             <TabTaskIcon
                               name="wb-sunny"
-                            
+
                             />
 
                           </Pressable>
@@ -415,26 +394,21 @@ export default function Create() {
                       </View>
                     </View>
                   </View>
-                  {selectedTab === "morning" && (
-                    <FlatList
-                      data={firstTwelve}
-                      className="mx-4"
-                      keyExtractor={(item) => item.id.toString()}
-                      showsVerticalScrollIndicator={true}
-                      renderItem={renderItem}
-                      contentContainerStyle={{ paddingBottom: 20 }}
-                    />
-                  )}
-                  {selectedTab === "afternoon" && (
-                    <FlatList
-                      className="mx-4"
-                      data={nextTwelve}
-                      keyExtractor={(item) => item.id.toString()}
-                      showsVerticalScrollIndicator={true}
-                      renderItem={renderItem}
-                      contentContainerStyle={{ paddingBottom: 20 }}
-                    />
-                  )}
+                  <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
+                    {selectedTab === "morning" &&
+                      firstTwelve.map((item) => (
+                        <View key={item.id} className="mx-4">
+                          {renderItem({ item })}
+                        </View>
+                      ))}
+
+                    {selectedTab === "afternoon" &&
+                      nextTwelve.map((item) => (
+                        <View key={item.id} className="mx-4">
+                          {renderItem({ item })}
+                        </View>
+                      ))}
+                  </ScrollView>
                 </>
               ) : (
                 <Text className="text-2xl font-bold md:text-3xl md:leading-tight dark:text-white">

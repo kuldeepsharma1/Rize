@@ -9,10 +9,13 @@ import {
   TextInput,
   Alert,
   useColorScheme,
+  Image,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TabProfileIcon, TabTaskIcon } from "@/components/navigation/TabBarIcon";
 import { useTemplateContext } from "@/context/TemplateContext";
+import { ThemedText } from "@/components/ThemedText";
+import { Link } from "expo-router";
 
 interface Task {
   id: number;
@@ -132,18 +135,16 @@ export default function TabTwoScreen() {
       <View className="flex flex-col md:flex-row">
         <View className="flex flex-row justify-center items-center mb-4 md:w-1/4 md:flex-col">
           <Pressable
-            className={`inline-flex flex-row gap-2 p-2 px-4 rounded-full justify-center items-center ${
-              selectedTab == "morning" ? "bg-[#0c891b]" : "bg-transparent dark:border-white"
-            }`}
+            className={`inline-flex flex-row gap-2 p-2 px-4 rounded-full justify-center items-center ${selectedTab == "morning" ? "bg-[#0c891b]" : "bg-transparent dark:border-white"
+              }`}
             onPress={() => setSelectedTab("morning")}
           >
             <TabTaskIcon name="wb-sunny" className={selectedTab == "morning" ? "text-white" : "dark:text-white"} />
             <Text className={selectedTab == "morning" ? "text-white" : "dark:text-white"}>Morning</Text>
           </Pressable>
           <Pressable
-            className={`inline-flex flex-row gap-2 p-2 px-4 rounded-full justify-center items-center ${
-              selectedTab == "afternoon" ? "bg-[#0c891b]" : "bg-transparent dark:border-white"
-            }`}
+            className={`inline-flex flex-row gap-2 p-2 px-4 rounded-full justify-center items-center ${selectedTab == "afternoon" ? "bg-[#0c891b]" : "bg-transparent dark:border-white"
+              }`}
             onPress={() => setSelectedTab("afternoon")}
           >
             <TabTaskIcon name="nights-stay" className={selectedTab == "afternoon" ? "text-white" : "dark:text-white"} />
@@ -156,6 +157,21 @@ export default function TabTwoScreen() {
             data={selectedTab === "morning" ? firstHalf : secondHalf}
             keyExtractor={(item) => item.id.toString()}
             renderItem={renderItem}
+            ListEmptyComponent={
+              <View className="flex flex-col items-center justify-between h-full pt-32">
+                <Image
+                  source={require("../../assets/images/icon.png")}
+                  className="rounded-xl w-52 h-56 mb-10"
+                />
+                <ThemedText type="title" >No Template </ThemedText>
+                <ThemedText type="subtitle">Select a template to continue</ThemedText>
+                <Link href={'/(tabs)/create'} className="py-6">
+                  <View className="py-3 px-4 bg-green-600 rounded-full flex items-center">
+                    <Text className="text-white text-lg font-medium">Select Template</Text>
+                  </View>
+                </Link>
+              </View>
+            }
           />
         </View>
       </View>
@@ -173,11 +189,14 @@ export default function TabTwoScreen() {
               value={editedContent}
               onChangeText={setEditedContent}
             />
-            <Pressable style={colorScheme === "dark" ? stylesDark.modalButton : styles.modalButton} onPress={saveEditedTask}>
-              <Text style={colorScheme === "dark" ? stylesDark.modalButtonText : styles.modalButtonText}>Save</Text>
+
+            <Pressable onPress={saveEditedTask}
+              className='bg-green-500 py-4  rounded-full w-full'
+            >
+              <Text className='text-center text-xl text-white font-semibold'>Save</Text>
             </Pressable>
             <Pressable onPress={() => setModalVisible(false)}>
-              <Text className="text-xl p-2 font-medium dark:text-white">Cancel</Text>
+              <Text className="text-xl text-center p-2 font-medium dark:text-white">Cancel</Text>
             </Pressable>
           </View>
         </Modal>
@@ -203,17 +222,8 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     padding: 10,
     marginBottom: 20,
-  },
-  modalButton: {
-    backgroundColor: "#0aaf1d",
-    padding: 10,
-    alignItems: "center",
-    marginBottom: 10,
-    width: 120,
-  },
-  modalButtonText: {
-    color: "#fff",
-  },
+  }
+
 });
 
 const stylesDark = StyleSheet.create({
@@ -236,14 +246,5 @@ const stylesDark = StyleSheet.create({
     marginBottom: 20,
     color: "#fff",
   },
-  modalButton: {
-    backgroundColor: "#0aaf1d",
-    padding: 10,
-    alignItems: "center",
-    marginBottom: 10,
-    width: 120,
-  },
-  modalButtonText: {
-    color: "#fff",
-  },
+
 });
