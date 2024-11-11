@@ -49,8 +49,7 @@
       ]
     ],
     "experiments": {
-      "typedRoutes": true,
-      "reactNativeNewArchitecture": true
+      "typedRoutes": true
     },
     "extra": {
       "router": {
