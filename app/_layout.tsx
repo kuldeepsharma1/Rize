@@ -10,6 +10,7 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 import { TemplateProvider } from '@/contexts/TemplateContext';
 import "../global.css";
 import { AuthProvider } from '@/contexts/AuthProvider';
+import { NotesProvider } from '@/contexts/NotesContext';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -48,10 +49,12 @@ export default function RootLayout() {
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <AuthProvider>
           <TemplateProvider>
-            <Stack screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              <Stack.Screen name="+not-found" />
-            </Stack>
+            <NotesProvider>
+              <Stack screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                <Stack.Screen name="+not-found" />
+              </Stack>
+            </NotesProvider>
           </TemplateProvider>
         </AuthProvider>
       </ThemeProvider>

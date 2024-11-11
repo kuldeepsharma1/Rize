@@ -22,9 +22,9 @@ interface MyModalProps {
   setInput: (text: string) => void;
   tag: string;
   setTag: (text: string) => void;
-  editMode: boolean;
+  editMode?: boolean;  // Optional editMode prop
   addNote: () => void;
-  editNote: () => void;
+  editNote?: () => void;
 }
 
 const MyModal: React.FC<MyModalProps> = ({
@@ -34,7 +34,7 @@ const MyModal: React.FC<MyModalProps> = ({
   setInput,
   tag,
   setTag,
-  editMode,
+  editMode = false,  // Default to false if editMode is not passed
   addNote,
   editNote,
 }) => {
