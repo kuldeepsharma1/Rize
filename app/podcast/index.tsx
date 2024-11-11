@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Pressable, ActivityIndicator, StyleSheet, FlatList, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  Pressable,
+  ActivityIndicator,
+  FlatList,
+  Alert,
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Parser from 'react-native-rss-parser';
 import { Link } from 'expo-router';
@@ -12,7 +20,7 @@ interface Rss {
   copyright?: string;
   lastBuildDate?: string;
   url: string;
-  isDefault?: boolean; // New property to mark default feeds
+  isDefault?: boolean;
 }
 
 export default function Index() {
@@ -36,15 +44,21 @@ export default function Index() {
       const storedFeeds = await AsyncStorage.getItem('rssFeeds');
       const parsedStoredFeeds: Rss[] = storedFeeds ? JSON.parse(storedFeeds) : [];
 
-      // Fetch details for each default feed if not already stored
-      const defaultFeedPromises = defaultFeeds.map((feed) => fetchRssFeed(feed.url, true));
+      const defaultFeedPromises = defaultFeeds.map((feed) =>
+        fetchRssFeed(feed.url, true)
+      );
       const defaultFeedResults = await Promise.all(defaultFeedPromises);
 
-      const nonNullDefaultFeeds = defaultFeedResults.filter((feed) => feed !== null) as Rss[];
+      const nonNullDefaultFeeds = defaultFeedResults.filter(
+        (feed) => feed !== null
+      ) as Rss[];
 
-      // Combine default feeds with user-added feeds, avoiding duplicates
-      const allFeeds = [...nonNullDefaultFeeds, ...parsedStoredFeeds].filter(
-        (feed, index, self) => index === self.findIndex((f) => f.url === feed.url)
+      const allFeeds = [
+        ...nonNullDefaultFeeds,
+        ...parsedStoredFeeds,
+      ].filter(
+        (feed, index, self) =>
+          index === self.findIndex((f) => f.url === feed.url)
       );
 
       setRssFeeds(allFeeds);
@@ -58,7 +72,10 @@ export default function Index() {
     await AsyncStorage.setItem('rssFeeds', JSON.stringify(feeds));
   };
 
-  const fetchRssFeed = async (url: string, isDefault: boolean = false): Promise<Rss | null> => {
+  const fetchRssFeed = async (
+    url: string,
+    isDefault: boolean = false
+  ): Promise<Rss | null> => {
     setLoading(true);
     try {
       const response = await fetch(url, {
@@ -75,7 +92,7 @@ export default function Index() {
         copyright: feed.copyright || 'No Copyright',
         lastBuildDate: feed.lastUpdated || 'No Date',
         url,
-        isDefault, // Mark feed as default if it is one
+        isDefault,
       };
     } catch (err) {
       console.error('Error fetching RSS feed:', err);
@@ -99,24 +116,32 @@ export default function Index() {
   };
 
   const removeRssFeed = async (url: string) => {
-    const updatedFeeds = rssFeeds.filter((feed) => feed.url !== url || feed.isDefault);
+    const updatedFeeds = rssFeeds.filter(
+      (feed) => feed.url !== url || feed.isDefault
+    );
     setRssFeeds(updatedFeeds);
     saveFeedsToStorage(updatedFeeds);
   };
 
   return (
-    <View style={styles.container}>
-      <Text className="mt-5" style={styles.title}>Podcast Feeds</Text>
+    <View className="flex-1 px-5 py-5 dark:bg-zinc-900 bg-zinc-100">
+      <Text className="text-2xl my-10 text-center font-bold text-zinc-800 dark:text-zinc-200">
+        Podcast Feeds
+      </Text>
 
-      <View style={styles.urlInputContainer}>
+      <View className="flex-row mb-5">
         <TextInput
-          style={styles.input}
+          className="flex-1 h-10 border border-zinc-300 dark:border-zinc-600 rounded-md px-3 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200"
           placeholder="Enter RSS Feed URL"
+          placeholderTextColor="#888"
           value={inputUrl}
           onChangeText={setInputUrl}
         />
-        <Pressable className='rounded-full bg-green-500  py-3 px-4 ml-4'  onPress={addRssFeed}>
-          <Text style={{ color: '#fff' }}>Add Feed</Text>
+        <Pressable
+          className="rounded-full bg-green-500 py-3 px-4 ml-4"
+          onPress={addRssFeed}
+        >
+          <Text className="text-white">Add Feed</Text>
         </Pressable>
       </View>
 
@@ -126,26 +151,38 @@ export default function Index() {
         data={rssFeeds}
         keyExtractor={(item) => item.url}
         renderItem={({ item }) => (
-          <View style={styles.feedContainer}>
-            <View style={styles.feedDetails}>
-              <Text style={styles.rssTitle}>{item.title}</Text>
-              <Text style={styles.rssDescription}>{parseHTMLContent(item.description || '')}</Text>
-              <Text style={styles.rssLanguage}>Language: {item.language}</Text>
-              <Text style={styles.rssDate}>Last Updated: {item.lastBuildDate}</Text>
+          <View className="mb-5 p-5 border border-zinc-300 dark:border-zinc-700 rounded-md bg-white dark:bg-zinc-800">
+            <View>
+              <Text className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
+                {item.title}
+              </Text>
+              <Text className="text-sm text-zinc-700 dark:text-zinc-400">
+                {parseHTMLContent(item.description || '')}
+              </Text>
+              <Text className="text-xs text-zinc-600 dark:text-zinc-500">
+                Language: {item.language}
+              </Text>
+              <Text className="text-xs text-zinc-600 dark:text-zinc-500">
+                Last Updated: {item.lastBuildDate}
+              </Text>
             </View>
-            <View style={styles.feedActions}>
+            <View className="flex-row justify-between mt-4">
               <Link
                 href={{
                   pathname: '/podcast/view/[id]',
                   params: { url: encodeURIComponent(item.url) },
                 }}
               >
-                <Text style={styles.viewEpisodesLink}>View Episodes</Text>
+                <Text className="text-blue-600 dark:text-blue-400">
+                  View Episodes
+                </Text>
               </Link>
-              {/* Display "Remove" button only if the feed is not a default feed */}
               {!item.isDefault && (
-                <Pressable onPress={() => removeRssFeed(item.url)} style={styles.removeButton}>
-                  <Text style={{ color: '#fff' }}>Remove</Text>
+                <Pressable
+                  onPress={() => removeRssFeed(item.url)}
+                  className="bg-red-500 py-2 px-4 rounded-md"
+                >
+                  <Text className="text-white">Remove</Text>
                 </Pressable>
               )}
             </View>
@@ -155,73 +192,3 @@ export default function Index() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
-  title: {
-    fontSize: 24,
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  urlInputContainer: {
-    flexDirection: 'row',
-    marginBottom: 20,
-  },
-  input: {
-    flex: 1,
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    paddingLeft: 10,
-    borderRadius: 5,
-  },
-  saveButton: {
-    backgroundColor: '#4CAF50',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    marginLeft: 10,
-    alignSelf: 'center',
-  },
-  feedContainer: {
-    marginBottom: 20,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-  },
-  feedDetails: {
-    marginBottom: 10,
-  },
-  rssTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  rssDescription: {
-    fontSize: 14,
-    marginBottom: 5,
-  },
-  rssLanguage: {
-    fontSize: 12,
-    marginBottom: 5,
-  },
-  rssDate: {
-    fontSize: 12,
-    marginBottom: 10,
-  },
-  feedActions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  viewEpisodesLink: {
-    color: '#0066cc',
-  },
-  removeButton: {
-    backgroundColor: '#ff4d4d',
-    padding: 5,
-    borderRadius: 3,
-  },
-});

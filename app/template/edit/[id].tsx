@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TabTaskIcon } from "@/components/navigation/TabBarIcon";
-import { useTemplateContext } from "@/context/TemplateContext";
+import { useTemplateContext } from "@/contexts/TemplateContext";
 import { ThemedText } from '@/components/ThemedText';
 
 const STORAGE_KEY = "Templates";

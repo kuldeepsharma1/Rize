@@ -3,7 +3,7 @@ import { View, Text, TextInput, Pressable, ActivityIndicator, Alert, Image } fro
 import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from 'firebase/auth';
 import { auth } from '../../firebase.config';
 import { useRouter } from 'expo-router';
-import { useAuth } from '@/context/AuthProvider';
+import { useAuth } from '@/contexts/AuthProvider';
 import { ThemedText } from '@/components/ThemedText';
 import { useColorScheme } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';

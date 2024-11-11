@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, FlatList, ActivityIndicator } from 'react-native';
 import Parser from 'react-native-rss-parser';
 import { Link, useLocalSearchParams } from 'expo-router';
 import parseHTMLContent from '@/utils/parseHtml';
+
 interface RSSEpisode {
   title: string;
   audioUrl: string;
@@ -12,21 +13,19 @@ interface RSSEpisode {
 
 export default function PodcastDetail() {
   const { url } = useLocalSearchParams(); // Get the URL parameter passed from the previous screen
-
   const [episodes, setEpisodes] = useState<RSSEpisode[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
- 
 
   useEffect(() => {
-
     if (url) {
-      fetchEpisodes(url); 
+      fetchEpisodes(url);
     }
-  }, [url]); 
+  }, [url]);
+
   const fetchEpisodes = async (url: string) => {
     if (!url) return;
-
     setLoading(true);
+
     try {
       const response = await fetch(url, {
         headers: {
@@ -37,7 +36,6 @@ export default function PodcastDetail() {
       const rssText = await response.text();
       const feed = await Parser.parse(rssText);
 
-      // Map the feed items into episodes with valid audio URLs
       const rssEpisodes: RSSEpisode[] = feed.items
         .map((item: any) => {
           const audioUrl = item.enclosures?.[0]?.url || null;
@@ -48,20 +46,22 @@ export default function PodcastDetail() {
             id: item.id,
           };
         })
-        .filter((episode) => episode.audioUrl !== null); // Filter episodes with audio URL
+        .filter((episode) => episode.audioUrl !== null);
 
       setEpisodes(rssEpisodes);
     } catch (err) {
       console.error('Error fetching episodes:', err);
-      setEpisodes([]); // Reset episodes on error
+      setEpisodes([]);
     } finally {
       setLoading(false);
     }
   };
- 
+
   return (
-    <View style={styles.container}>
-      <Text className='mt-5' style={styles.title}>Podcast Episodes</Text>
+    <View className="flex-1 px-5 py-5 bg-zinc-100 dark:bg-zinc-900">
+      <Text className="text-2xl my-10 font-bold text-center text-zinc-800 dark:text-zinc-200 mb-5">
+        Podcast Episodes
+      </Text>
 
       {loading ? (
         <ActivityIndicator size="large" color="#0000ff" />
@@ -70,17 +70,22 @@ export default function PodcastDetail() {
           data={episodes}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <View style={styles.episodeContainer}>
-              <Text style={styles.episodeTitle}>{item.title}</Text>
-              <Text style={styles.episodeDescription}>{parseHTMLContent(item.description)}</Text>
-              
-              <Link className='bg-green-500 py-4 rounded-full text-center text-white' href={{
-              pathname: '/podcast/play/[id]',
-              params: { audioUrl: item.audioUrl,title: item.title },
-            }} >
-              <Text>Play Episode</Text>
-            </Link>
-              
+            <View className="pb-5 mb-4 border-b border-zinc-300 dark:border-zinc-700">
+              <Text className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
+                {item.title}
+              </Text>
+              <Text className="text-sm text-zinc-700 dark:text-zinc-400 mt-1">
+                {parseHTMLContent(item.description)}
+              </Text>
+              <Link
+                className="mt-3 bg-green-500 py-3 rounded-full text-center text-white"
+                href={{
+                  pathname: '/podcast/play/[id]',
+                  params: { audioUrl: item.audioUrl, title: item.title },
+                }}
+              >
+                <Text>Play Episode</Text>
+              </Link>
             </View>
           )}
         />
@@ -88,33 +93,3 @@ export default function PodcastDetail() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
-  title: {
-    fontSize: 24,
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  episodeContainer: {
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-  },
-  episodeTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  episodeDescription: {
-    fontSize: 14,
-    marginTop: 5,
-  },
-  audioUrl: {
-    fontSize: 12,
-    marginTop: 5,
-    color: 'blue',
-  },
-});

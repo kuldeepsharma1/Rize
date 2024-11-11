@@ -19,7 +19,7 @@ import {
   TabTaskIcon
 } from "@/components/navigation/TabBarIcon";
 import { Link } from "expo-router";
-import { useTemplateContext } from "@/context/TemplateContext";
+import { useTemplateContext } from "@/contexts/TemplateContext";
 
 const STORAGE_KEY = "Templates";
 

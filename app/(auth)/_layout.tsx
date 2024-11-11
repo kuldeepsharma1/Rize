@@ -1,5 +1,5 @@
 import Loader from "@/components/Loader";
-import { useAuth } from "@/context/AuthProvider";
+import { useAuth } from "@/contexts/AuthProvider";
 import { Redirect, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 

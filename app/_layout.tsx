@@ -7,9 +7,9 @@ import 'react-native-reanimated';
 import { initializeTemplates } from '@/utils/templateInitializer'; // Adjust the path as per your project structure
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { TemplateProvider } from '@/context/TemplateContext';
+import { TemplateProvider } from '@/contexts/TemplateContext';
 import "../global.css";
-import { AuthProvider } from '@/context/AuthProvider';
+import { AuthProvider } from '@/contexts/AuthProvider';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();

@@ -3,7 +3,7 @@ import { View, TextInput, Pressable, ActivityIndicator, Image, Text, useColorSch
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase.config';
 import { useRouter } from 'expo-router';
-import { useAuth } from '@/context/AuthProvider';
+import { useAuth } from '@/contexts/AuthProvider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ThemedText } from '@/components/ThemedText';
 import ParallaxScrollView from '@/components/ParallaxScrollView';

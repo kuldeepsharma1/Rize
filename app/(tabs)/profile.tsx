@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, Alert, Pressable, ActivityIndicator, useColorScheme } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Link, useRouter } from 'expo-router';
-import { useAuth } from '@/context/AuthProvider';
+import { useAuth } from '@/contexts/AuthProvider';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../firebase.config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -98,7 +98,7 @@ export default function ProfileScreen() {
         </View>
       </View>
       <View>
-      <Link href={'/podcast'} className='text-center pt-20'>Go to podcast</Link>
+      <Link href={'/podcast'} className='text-center text-black dark:text-white pt-20'>Go to podcast</Link>
     </View>
     </ParallaxScrollView>
   );

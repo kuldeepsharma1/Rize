@@ -14,7 +14,7 @@ import FloatingLink from "@/components/FlotingLink";
 import { TabTaskIcon } from "@/components/navigation/TabBarIcon";
 import { Link } from "expo-router";
 import NotificationScheduler from "@/components/NotificationScheduler";
-import { useTemplateContext } from "@/context/TemplateContext";
+import { useTemplateContext } from "@/contexts/TemplateContext";
 
 interface TemplateItem {
   id: number;

@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { View, Text, Pressable, ScrollView, Switch, TextInput, Alert, ActivityIndicator } from 'react-native';
-import { useAuth } from "@/context/AuthProvider";
+import { useAuth } from "@/contexts/AuthProvider";
 import { updateProfile } from "firebase/auth";
 import { useColorScheme } from 'react-native';
 import { auth } from '../../firebase.config';
